@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>GISTANI</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+    <link rel="stylesheet" href="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+	<link rel="stylesheet" href="assets/plugins/betterscale/L.Control.BetterScale.css" />
+
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="assets/img/UMS.png">
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+          </div>
+			<a class="navbar-brand" href="#">WEBGIS PERTANIAN</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <!--<form class="navbar-form navbar-right" role="search">
+                <div class="form-group has-feedback">
+                    <input id="searchbox" type="text" placeholder="Search" class="form-control">
+                    <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+                </div>
+              </form>-->
+      
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn"><i class="fa fa-picture-o white"></i>&nbsp;&nbsp;Legenda</a></li>
+                <li class="dropdown">
+                        <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tampilkan <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-crosshairs"></i>&nbsp;&nbsp;Keseluruhan</a></li>
+                        </ul>
+                      </li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="downloaddata-btn"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download Data</a></li>
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;Tentang</a></li>
+                    </ul>
+            <!--<li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;POI List</a></li>-->
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!--<div id="container">
+        <div id="sidebar">
+          <div class="sidebar-wrapper">
+            <div class="panel panel-default" id="features">
+              <div class="panel-heading">
+                <h3 class="panel-title">Points of Interest
+                <button type="button" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-8 col-md-8">
+                    <input type="text" class="form-control search" placeholder="Filter" />
+                  </div>
+                  <div class="col-xs-4 col-md-4">
+                    <button type="button" class="btn btn-primary pull-right sort" data-sort="feature-name" id="sort-btn"><i class="fa fa-sort"></i>&nbsp;&nbsp;Sort</button>
+                  </div>
+                </div>
+              </div>
+              <div class="sidebar-table">
+                <table class="table table-hover" id="feature-list">
+                  <thead class="hidden">
+                    <tr>
+                      <th>Icon</th>
+                    <tr>
+                    <tr>
+                      <th>Name</th>
+                    <tr>
+                    <tr>
+                      <th>Chevron</th>
+                    <tr>
+                  </thead>
+                  <tbody class="list"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="map"></div>
+      </div>
+      <div id="loading">
+        <div class="loading-indicator">
+          <div class="progress progress-striped active">
+            <div class="progress-bar progress-bar-info progress-bar-full"></div>
+          </div>
+        </div>
+      </div>-->
+
+    <div id="container">
+      <div id="map"></div>
+    </div>
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-info progress-bar-full"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Selamat Datang Di GISTANI</h4>
+          </div>
+          
+          <div class="modal-body">
+            <ul class="nav nav-tabs nav-justified" id="aboutTabs">
+              <li><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;Info</a></li>
+              <li><a href="#disclaimer" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Peringatan</a></li>
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe"></i>&nbsp;Sumber Data <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#Citra-Satelit-Landsat-8-L1-tab" data-toggle="tab">Citra Landsat 8 L1</a></li>
+                    <li><a href="#Sawah-tab" data-toggle="tab">Batas Lahan Sawah</a></li>
+                    <li><a href="#Admin-tab" data-toggle="tab">Batas Administrasi</a></li>
+                    <li><a href="#Jalan-tab" data-toggle="tab">Jalan Raya</a></li>
+                    <li><a href="#Sungai-tab" data-toggle="tab">Sungai</a></li>
+                    <li><a href="#RELKA-tab" data-toggle="tab">REL KA</a></li>
+                  </ul>
+              </li>
+              <li class="active"><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Hubungi kami</a></li>
+            </ul>
+
+            <div style='text-align:justify;'class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade" id="about">
+                <p>Peta berbasis WEB ini disederhanakan dari <a href="https://github.com/bmcbride/bootleaf" target="_blank">Bootleaf Template bmcbride</a> dan <a href="http://www.sinaugis.com/" target="_blank">SinauGIS</a>. Dengan memanfaatkan perpustakaan <a href="http://getbootstrap.com/">Bootstrap 3</a>, <a href="http://leafletjs.com/" target="_blank">Leaflet</a> dan <a href="http://twitter.github.io/typeahead.js/" target="_blank">typeahead.js</a>. Sehingga aplikasi ini tidak berbayar sesuai dengan prinsip Open source dan MIT licensed. </p> 
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Sekilas Tentang GISTANI</div>
+                    <ul class="list-group">
+                      <li class="list-group-item">GISTANI merupakan program yang dibangun berdasarkan penelitian dengan judul ESTIMASI PRODUKSI PADI BERDASARKAN FASE TUMBUH DAN MODEL ARIMA (AUTOREGRESSIVE INTEGRATED MOVING AVERAGE) DENGAN MENGGUNAKAN CITRA LANDSAT 8 DI KABUPATEN SUKOHARJO MENGGUNAKAN VISUALISASI WEBGIS sebagai salah satu syarat mendapatkan gelar Strata-1. Estimasi Produksi Berdasarkan Sebaran Fase Tumbuh Tanaman Padi merupakan Informasi Utama dalam WEBGIS ini.
+                        Terlepas dari tujuan praktis, harapanya di era-otomasi (Industri 4.0) WEBGIS ini dapat bermanfaat sebagai media kajian dalam menghadapi isu ketahan pangan baik regional maupun nasional bagi para Akademisi dan Praktisi dilingkungan bidang kajian Tanaman Pangan, serta dapat memperkaya pustaka ilmiah khususnya dilingkungan <a href="http://geografi.ums.ac.id/" target="_blank">Fakultas Geografi UMS</a> dan umumnya seluruh unsur, instansi maupun lembaga terkait ketahanan pangan. Adapun Model dan Metode yang digunakan dalam Proses Penelitian, Sebagai Berikut:</li>
+                      <li class="list-group-item">Model Indeks Vegetasi : menggunakan Model Algortima <a href="https://www.usgs.gov/media/images/ndvi-normalized-difference-vegetation-index-maps-landsat" target="_blank">NDVI</a> dan <a href="https://www.usgs.gov/land-resources/nli/landsat/landsat-modified-soil-adjusted-vegetation-index-msavi" target="_blank">MSAVI</a></li>
+                      <li class="list-group-item">Analisi <a href="http://pusdiklat.bps.go.id/index.php?r=modDataBuku/view&id=316" target="_blank">Regresi Linier Sederhana</a> : Untuk Menentukan Model Algorimta Terbaik</li>
+                      <li class="list-group-item">Model Estimasi <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&cad=rja&uact=8&ved=2ahUKEwj4sr3k9O3hAhWona0KHZt_CwsQFjACegQIAhAC&url=http%3A%2F%2Fdaps.bps.go.id%2Ffile_artikel%2F77%2Farima.pdf&usg=AOvVaw1JFQbl3kGdpjPc1ky88cee" target="_blank">ARIMA</a> : Untuk Menentukan Nilai Estimasi Produktivitas</li>
+                    </ul>
+                  </div>
+              </div>
+
+              <div class="tab-pane fade active in" id="contact">
+                <table class='table table-striped table-bordered table-condensed'>
+					          <tr><td colspan="2" style="text-align: center"><img src="assets/img/UMS.png"></td></tr>
+				          	<tr><td>Website</td><td><a href="http://geografi.ums.ac.id/" target="_blank">http://geografi.ums.ac.id/</a></td></tr>
+				          	<tr><td>Email</td><td>geografi@ums.ac.id</td></tr>
+				          	<tr><td>Telepon/SMS/WhatsApp</td><td>0852 8750 8004</td></tr>
+					          <tr><td>Instagram</td><td><a href="https://www.instagram.com/arrifdarmawan/" target="_blank">Arif Darmawan</a></td></tr>
+				        </table>
+              </div>
+
+              <div id="disclaimer" class="tab-pane fade text-danger">
+                  <p>Segala Bentuk data yang dipublikasikan dalam web ini sifatnya terbuka dan bebas dimanfaatkan kecuali tujuan komersialisasi.</p>
+                  <p>Siapapun bebas mengakses data yang tersedia dan memanfatkanya baik dengan mencantumkan sumber web ini ataupun tidak sejauh dalam tujuan yang bermanfaat bagi kemaslahatan umat dan bangsa.</p>
+                  <p> </p>
+                  <p> </p>
+                  <p> </p>
+                  <p>Hormat Saya (Penulis)</p>
+                  <p><a href="https://www.instagram.com/arrifdarmawan/" target="_blank">Arif Darmawan</a></p>
+                </div>
+              
+                <div class="tab-pane fade" id="Citra-Satelit-Landsat-8-L1-tab">
+                    <p>Citra Satelit Landsat 8 L1 <a href="https://earthexplorer.usgs.gov/" target="_blank">EarthExplorer USGS</a></p>
+                  </div>
+                  <div class="tab-pane fade" id="Sawah-tab">
+                    <p>Batas Lahan Sawah <a href="http://tanahair.indonesia.go.id/portal-web" target="_blank">Portal BIS (InaGeoportal)</a></p>
+                  </div>
+                  <div class="tab-pane fade" id="Admin-tab">
+                    <p>Batas Adminstrasi Kecamatan Dan Kabupaten <a href="http://tanahair.indonesia.go.id/portal-web" target="_blank">Portal BIS (InaGeoportal)</a></p>
+                  </div>
+                  <div class="tab-pane fade" id="Jalan-tab">
+                      <p>Jalan Raya <a href="http://tanahair.indonesia.go.id/portal-web" target="_blank">Portal BIS (InaGeoportal)</a></p>
+                    </div>
+                  <div class="tab-pane fade" id="Sungai-tab">
+                      <p>Sungai <a href="http://tanahair.indonesia.go.id/portal-web" target="_blank">Portal BIS (InaGeoportal)</a></p>
+                    </div>
+                  <div class="tab-pane fade" id="RELKA-tab">
+                      <p>REL KA <a href="http://tanahair.indonesia.go.id/portal-web" target="_blank">Portal BIS (InaGeoportal)</a></p>
+                    </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+	
+	<div class="modal fade" id="downloaddataModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Download Data</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+				<ul>
+					<li><a href="" download="Publikasi_Ilmiah.Pdf">Paper Publikasi Ilmiah.Pdf (Belum Tersedia)</a></li>
+          <li><a href="data/Fase_Tumbuh_Asli.geojson" download="Fase_Tumbuh_Asli.geojson">Data Fase Tumbuh (Geojson)</a></li>
+          <li><a href="data/kabupaten_kota_diy_point.geojson" download="SAMPEL_FT.geojson">Lokasi Sampel Fase Tumbuh (Geojson)</a></li>
+          <li><a href="data/DOITT_THEATER_01_13SEPT2010.geojson" download="SAMPEL_PROD.geojson">Lokasi Sampel Produktivitas (Geojson)</a></li>
+          <li><a href="data/ADMIN_KAB_LINE.geojson" download="ADMIN_KAB_LINE.geojson">Batas Administrasi Kabupaten SUkoharjo (Geojson)</a></li>
+          <li><a href="data/ADMIN_KEC.geojson" download="ADMIN_KEC.geojson">Batas Administrasi Kecamatan (Geojson)</a></li>
+          <li><a href="data/jalan_utama_diy_line.geojson" download="JALAN.geojson">Jalan Raya (Geojson)</a></li>
+          <li><a href="data/REL_KA.geojson" download="REL_KA.geojson">Rel KA (Geojson)</a></li>
+          <li><a href="data/sungai_besar_diy_polygon.geojson" download="SUNGAI.geojson">Sungai (Geojson)</a></li>
+				</ul>
+			</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+	
+	<div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Legenda</h4>
+          </div>
+          <div class="modal-body">
+            <p><img src="assets/img/bubble_pink32.png" width="20" /> Sampel Fase Tumbuh</p>
+			      <p><img src="assets/legend/legenda.png" width="240" /></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+    <script src="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+	<script src="assets/plugins/betterscale/L.Control.BetterScale.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
