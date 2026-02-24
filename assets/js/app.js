@@ -301,15 +301,16 @@ var Sawah = L.geoJson(null, {
     });
 
     if (feature.properties) {
-      var content =
-        "<table class='table table-striped table-bordered table-condensed'>" +
-        "<tr><th>Fase Tumbuh</th><td>" + feature.properties.FT + "</td></tr>" +
-        "<tr><th>Luas</th><td>" + feature.properties.Luas + " Hektar</td></tr>" +
-        "<tr><th>Produktivitas</th><td>" + feature.properties.Produktivi + " Kuintal/Hektar</td></tr>" +
-        "<tr><th>Estimasi Produksi</th><td>" + feature.properties.Produksi + " Kuintal</td></tr>" +
-		"<tr><th>Waktu Panen</th><td>" + feature.properties.WKT_PN + " Munggu kedepan</td></tr>" +
-        "</table>";
-
+		var prod = Math.round(feature.properties.Produktivi);
+		var produksi = Math.round(feature.properties.Produksi);
+      var content = "<table class='table table-striped table-bordered table-condensed'>" +
+        				"<tr><th>Fase Tumbuh</th><td>" + feature.properties.FT + "</td></tr>" +
+       					"<tr><th>Luas</th><td>" + feature.properties.Luas + " Hektar</td></tr>" +
+        				"<tr><th>Produktivitas</th><td>" + prod + " Kuintal/Hektar</td></tr>" +
+        				"<tr><th>Estimasi Produksi</th><td>" + produksi + " Kuintal</td></tr>" +
+						"<tr><th>Waktu Panen</th><td>" + feature.properties.WKT_PN + " Munggu kedepan</td></tr>" +
+        			"</table>";
+		
       layer.on("click", function () {
         $("#feature-title").html("Fase Tumbuh: " + feature.properties.Kode_FT); // 🔥 FIX
         $("#feature-info").html(content);
