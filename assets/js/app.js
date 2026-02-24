@@ -187,73 +187,37 @@ $.getJSON("data/kabupaten_kota_diy_point.geojson", function (data) {
   pointkabkotClusters.addLayer(pointkabkot);
 });
 
-/* Sampel Produktivitas */
-/* var theaterLayer = L.geoJson(null);
-var theaters = L.geoJson(null, {
-  pointToLayer: function (feature, latlng) {
-    return L.marker(latlng, {
-      icon: L.icon({
-        iconUrl: "assets/img/bubble_pink32.png",
-        iconSize: [24, 28],
-        iconAnchor: [12, 28],
-        popupAnchor: [0, -25]
-      }),
-      title: feature.properties.Nama,
-      riseOnHover: true
-    });
-  },
-  onEachFeature: function (feature, layer) {
-    if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Name</th><td>" + feature.properties.NAME + "</td></tr>" + "<tr><th>Phone</th><td>" + feature.properties.TEL + "</td></tr>" + "<tr><th>Address</th><td>" + feature.properties.ADDRESS1 + "</td></tr>" + "<tr><th>Website</th><td><a class='url-break' href='" + feature.properties.URL + "' target='_blank'>" + feature.properties.URL + "</a></td></tr>" + "<table>";
-      layer.on({
-        click: function (e) {
-          $("#feature-title").html(feature.properties.Nama);
-          $("#feature-info").html(content);
-          $("#featureModal").modal("show");
-          highlight.clearLayers().addLayer(L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], highlightStyle));
-        }  
-      });
-    }
-  }
-});
-$.getJSON("data/DOITT_THEATER_01_13SEPT2010.geojson", function (data) {
-  theaters.addData(data);
-  map.addLayer(theaterLayer);
-});
 
 /* Jalan Utama */
 var jalanutamaColors = {"Jalan Arteri":"3", "Jalan Kolektor":"1"};
+
 var jalanutama = L.geoJson(null, {
   style: function (feature) {
-      return {
-        color: "red",
-        weight: jalanutamaColors[feature.properties.Jenis_JL],
-        opacity: 1
-      };
+    return {
+      color: "red",
+      weight: jalanutamaColors[feature.properties.Jenis_JL] || 2,
+      opacity: 1
+    };
   },
+
   onEachFeature: function (feature, layer) {
     if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Jenis Jalan</th><td>" + feature.properties.Jenis_JL + "</td></tr>" + "<tr><th>Panjang Kilometer</th><td>" + feature.properties.PANJANG_KM + "</td></tr>" + "<tr><th>Kondisi</th><td>" + "Kondisonal" + "</td></tr>" + "</table>";
-      layer.on({
-        click: function (e) {
-          $("#feature-title").html(feature.properties.Jenis_JL);
-          $("#feature-info").html(content);
-          $("#featureModal").modal("show");
+      var content =
+        "<table class='table table-striped table-bordered table-condensed'>" +
+        "<tr><th>Jenis Jalan</th><td>" + feature.properties.Jenis_JL + "</td></tr>" +
+        "<tr><th>Panjang Kilometer</th><td>" + feature.properties.PANJANG_KM + "</td></tr>" +
+        "</table>";
 
-        }
+      layer.on("click", function () {
+        $("#feature-title").html("Jalan: " + feature.properties.Jenis_JL);
+        $("#feature-info").html(content);
+        $("#featureModal").modal("show");
       });
     }
+
     layer.on({
       mouseover: function (e) {
-        var layer = e.target;
-        layer.setStyle({
-          weight: 3,
-          color: "#00FFFF",
-          opacity: 1
-        });
-        if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-        }
+        e.target.setStyle({ weight: 3, color: "#00FFFF" });
       },
       mouseout: function (e) {
         jalanutama.resetStyle(e.target);
@@ -261,6 +225,7 @@ var jalanutama = L.geoJson(null, {
     });
   }
 });
+
 $.getJSON("data/jalan_utama_diy_line.geojson", function (data) {
   jalanutama.addData(data);
   map.addLayer(jalanutama);
@@ -268,67 +233,91 @@ $.getJSON("data/jalan_utama_diy_line.geojson", function (data) {
 
 /* Layer Sungai */
 var sungaibesarColors = {"Sungai":"lightblue", "Gosong Sungai":"gray"};
+
 var sungaibesar = L.geoJson(null, {
   style: function (feature) {
     return {
       fillColor: sungaibesarColors[feature.properties.KETERANGAN],
-	  fillOpacity: 0.7,
-	  color: "blue",
-	  weight: 0.5,
+      fillOpacity: 0.7,
+      color: "blue",
+      weight: 1,
       opacity: 1,
-	  smoothFactor: 0,
-      clickable: false
+      clickable: true   // 🔥 FIX: biar bisa diklik
     };
+  },
+
+  onEachFeature: function (feature, layer) {
+    if (feature.properties) {
+      var content =
+        "<table class='table table-striped table-bordered table-condensed'>" +
+        "<tr><th>Keterangan</th><td>" + feature.properties.KETERANGAN + "</td></tr>" +
+        "</table>";
+
+      layer.on("click", function () {
+        $("#feature-title").html("Sungai Besar");
+        $("#feature-info").html(content);
+        $("#featureModal").modal("show");
+      });
+    }
+
+    layer.on({
+      mouseover: function (e) {
+        e.target.setStyle({ color: "#00FFFF", weight: 2 });
+      },
+      mouseout: function (e) {
+        sungaibesar.resetStyle(e.target);
+      }
+    });
   }
 });
+
 $.getJSON("data/sungai_besar_diy_polygon.geojson", function (data) {
   sungaibesar.addData(data);
 });
 
 /* Layer Sawah */
-var SawahColors = {"1":"#adff2f", "2":"#7fff00", "3":"#7cfc00", "4":"#00ff00", "5":"#32cd32", "6":"#98fb98", "7":"#90ee90", "8":"#00fa9a", "9":"#00ff7f"};
+var SawahColors = {"1":"#adff2f","2":"#7fff00","3":"#7cfc00","4":"#00ff00","5":"#32cd32","6":"#98fb98","7":"#90ee90","8":"#00fa9a","9":"#00ff7f"};
+
 var Sawah = L.geoJson(null, {
   style: function (feature) {
     return {
       fillColor: SawahColors[feature.properties.Kode_FT],
-	  fillOpacity: 0.7,
-	  color: "gray",
-	  weight: 1,
-      opacity: 1,
-	  smoothFactor: 0,
-      clickable: true
+      fillOpacity: 0.7,
+      color: "gray",
+      weight: 1,
+      opacity: 1
     };
   },
+
   onEachFeature: function (feature, layer) {
-	layer.on({
+
+    layer.on({
       mouseover: function (e) {
-        var layer = e.target;
-        layer.setStyle({
-          weight: 2,
-          fillColor: "#00FFFF",
-          opacity: 1
-        });
-        if (!L.Browser.ie && !L.Browser.opera) {
-          layer.bringToFront();
-        }
+        e.target.setStyle({ weight: 2, fillColor: "#00FFFF" });
       },
       mouseout: function (e) {
         Sawah.resetStyle(e.target);
       }
     });
-	if (feature.properties) {
-      var content = "<table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Kode Fase Tumbuh</th><td>" + feature.properties.Kode_FT + "</td></tr>" + "<tr><th>Luas</th><td>" + feature.properties.Luas + " Ha</td></tr>" + "<tr><th>Produktivitas</th><td>" + feature.properties.Produktivi + " Kw/Ha</td></tr>" +  "<tr><th>Produksi</th><td>" + feature.properties.Produksi + " Kw</td></tr>" +"<tr><th>Waktu Panen</th><td>" + feature.properties.WKT_PN +" Minggu Lagi<tr><th>Estimasi Per Tanggal</th><td>" + "15 April 2019" + "</td></tr>"+ "</table>";
-      layer.on({
-        click: function (e) {
-          $("#feature-title").html("Estimasi Fase " + feature.properties.FT);
-          $("#feature-info").html(content);
-          $("#featureModal").modal("show");
 
-        }
+    if (feature.properties) {
+      var content =
+        "<table class='table table-striped table-bordered table-condensed'>" +
+        "<tr><th>Kode FT</th><td>" + feature.properties.Kode_FT + "</td></tr>" +
+        "<tr><th>Luas</th><td>" + feature.properties.Luas + " Ha</td></tr>" +
+        "<tr><th>Produktivitas</th><td>" + feature.properties.Produktivi + " Kw/Ha</td></tr>" +
+        "<tr><th>Produksi</th><td>" + feature.properties.Produksi + " Kw</td></tr>" +
+        "</table>";
+
+      layer.on("click", function () {
+        $("#feature-title").html("Fase Tumbuh: " + feature.properties.Kode_FT); // 🔥 FIX
+        $("#feature-info").html(content);
+        $("#featureModal").modal("show");
       });
-	}
+    }
   }
 });
+
 $.getJSON("data/SAWAH.geojson", function (data) {
   Sawah.addData(data);
   map.addLayer(Sawah);
@@ -342,6 +331,13 @@ var map = L.map('map', {
   zoomControl: false,
   attributionControl: true
 });
+
+// Fix agar semua layer bisa diklik (tidak ketutup marker cluster)
+setTimeout(function() {
+  if (typeof Sawah !== "undefined") Sawah.bringToFront();
+  if (typeof jalanutama !== "undefined") jalanutama.bringToFront();
+  if (typeof sungaibesar !== "undefined") sungaibesar.bringToFront();
+}, 800);
 
 /* Clear feature highlight when map is clicked */
 map.on("click", function(e) {
