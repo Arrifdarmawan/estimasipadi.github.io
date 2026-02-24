@@ -303,10 +303,11 @@ var Sawah = L.geoJson(null, {
     if (feature.properties) {
       var content =
         "<table class='table table-striped table-bordered table-condensed'>" +
-        "<tr><th>Kode FT</th><td>" + feature.properties.Kode_FT + "</td></tr>" +
-        "<tr><th>Luas</th><td>" + feature.properties.Luas + " Ha</td></tr>" +
-        "<tr><th>Produktivitas</th><td>" + feature.properties.Produktivi + " Kw/Ha</td></tr>" +
-        "<tr><th>Produksi</th><td>" + feature.properties.Produksi + " Kw</td></tr>" +
+        "<tr><th>Fase Tumbuh</th><td>" + feature.properties.FT + "</td></tr>" +
+        "<tr><th>Luas</th><td>" + feature.properties.Luas + " Hektar</td></tr>" +
+        "<tr><th>Produktivitas</th><td>" + feature.properties.Produktivi + " Kuintal/Hektar</td></tr>" +
+        "<tr><th>Estimasi Produksi</th><td>" + feature.properties.Produksi + " Kuintal</td></tr>" +
+		"<tr><th>Waktu Panen</th><td>" + feature.properties.WKT_PN + " Munggu kedepan</td></tr>" +
         "</table>";
 
       layer.on("click", function () {
